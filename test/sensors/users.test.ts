@@ -11,6 +11,7 @@ const measurementHumidity = "Humidity";
 const datetime = "2022-08-23T23:05:12Z";
 const startTime = "2022-08-26T16:33:55Z";
 const endTime = "2022-08-26T19:25:30Z";
+const endTime2 = "2022-08-29T11:19:00Z";
 const value = 22.8;
 
 const sensorData = {
@@ -111,6 +112,7 @@ describe('sensors endpoints', function () {
         expect(res.body.message).to.be.equal('success');
     });
 
+    // single filter tests
     it('should allow a GET from /sensors with startTime filter', async function () {
         const res = await request
             .get(`/sensors?startTime=${startTime}`)
@@ -207,6 +209,87 @@ describe('sensors endpoints', function () {
         expect(res.body[0]).to.have.property('Value');
         expect(res.body[0]).to.have.property('Datetime');
         expect(res.body[0]).to.have.property('Room');
+    });
+
+    // multiple filter tests
+    it('should allow a GET from /sensors with startTime and endTime filter', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&endTime=${endTime}`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).not.to.be.empty;
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(2);
+        expect(res.body[0]).to.have.property('_id');
+        expect(res.body[0]).to.have.property('Value');
+        expect(res.body[0]).to.have.property('Datetime');
+        expect(res.body[0]).to.have.property('Room');
+    });
+
+    it('should allow a GET from /sensors with startTime and room filter', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&room=${roomA}`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).not.to.be.empty;
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(2);
+        expect(res.body[0]).to.have.property('_id');
+        expect(res.body[0]).to.have.property('Value');
+        expect(res.body[0]).to.have.property('Datetime');
+        expect(res.body[0]).to.have.property('Room');
+    });
+
+    it('should allow a GET from /sensors with startTime and measurement filter', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&measurement=${measurementTemperature}`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(3);
+    });
+
+    // All filters applied without custom time resolution
+    it('should allow a GET from /sensors with all filters applied', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&endTime=${endTime2}&room=${roomC}&measurement=${measurementTemperature}`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(2);
+    });
+
+    // All filters applied with WEEKLY time resolution
+    it('should allow a GET from /sensors with all filters applied and WEEKLY time resolution', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&endTime=${endTime2}&room=${roomC}&measurement=${measurementTemperature}&timeResolution=weekly`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(1);
+        expect(res.body[0].values).to.have.lengthOf(2);
+    });
+
+    // All filters applied with DAILY time resolution
+    it('should allow a GET from /sensors with all filters applied and DAILY time resolution', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&endTime=${endTime2}&room=${roomC}&measurement=${measurementTemperature}&timeResolution=daily`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(1);
+        expect(res.body[0].values).to.have.lengthOf(2);
+    });
+
+    // All filters applied with HOURLY time resolution
+    it('should allow a GET from /sensors with all filters applied and HOURLY time resolution', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime}&endTime=${endTime2}&room=${roomC}&measurement=${measurementTemperature}&timeResolution=hourly`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(1);
+        expect(res.body[0].values).to.have.lengthOf(2);
     });
 
 });
