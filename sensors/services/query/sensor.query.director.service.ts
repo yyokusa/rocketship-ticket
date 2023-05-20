@@ -54,7 +54,7 @@ class SensorQueryDirector {
         // add group by because of time resolution
         if (timeResolution) {
             console.log("\n\n\n----------adding group by: ----------\n");
-            this.builder.addGroupBy(true);
+            this.builder.addGroupBy();
         }
     }
 }
