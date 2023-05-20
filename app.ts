@@ -1,11 +1,3 @@
-import dotenv from 'dotenv';
-// must be at the very top of the file
-// to ensure that the environment variables are set
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-    throw dotenvResult.error;
-}
-
 import express from 'express';
 import * as http from 'http';
 import helmet from 'helmet';
