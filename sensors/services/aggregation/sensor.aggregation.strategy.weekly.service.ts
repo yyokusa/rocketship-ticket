@@ -2,6 +2,12 @@ import { GroupByDataType } from "./sensor.aggregation.strategy.custom.service";
 import { CustomStrategy } from "./sensor.aggregation.strategy.custom.service";
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
 
+/**
+ * @class ConcreteStrategyWeekly
+ * @extends CustomStrategy
+ * @description Aggregation using custom weekly time resolution callback by utilizing the custom strategy.
+ * @method getAggregate - Returns aggregated data.
+ */
 class ConcreteStrategyWeekly extends CustomStrategy {
     public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
         return super.getAggregateCustom(data, (date: Date) => {

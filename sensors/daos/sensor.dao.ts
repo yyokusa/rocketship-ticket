@@ -12,10 +12,19 @@ import SensorRecordType from "../types/sensor.record.type";
 
 const log: debug.IDebugger = debug('app:mongo-dao');
 
+/**
+ * @class SensorDataDao
+ * @description Data Access Object for SensorData
+ * @method addSensorData
+ * @method addSensorDataBulk
+ * @method getSensorData
+ */
 class SensorDataDao {
 
+    // mongoose schema
     Schema = mongooseService.getMongoose().Schema;
 
+    // schema used to create a new SensorData document
     sensorDataSchema = new this.Schema<SensorSchemaType>({
         _id: String,
         Datetime: Date,
@@ -24,12 +33,18 @@ class SensorDataDao {
         Value: Number,
     }, { id: false });
 
+    // mongoose model
     SensorData: SensorQueryModelType = mongooseService.getMongoose().model('SensorData', this.sensorDataSchema);
 
     constructor() {
         log('Created new instance of SensorDataDao');
     }
 
+    /**
+     * This function creates a new SensorData document and saves it to the database
+     * @param sensorDataFields - fields to be added to the SensorData document
+     * @returns id of the newly created document
+     */
     async addSensorData(sensorDataFields: CreateSensorDataDto) {
         const generatedId = shortid.generate();
         const sensorData = new this.SensorData({
@@ -40,6 +55,11 @@ class SensorDataDao {
         return generatedId;
     }
     
+    /**
+     * This function creates new SensorData documents and saves them to the database
+     * @param sensorDataBulkFields - array of fields to be added to the SensorData documents
+     * @returns 
+     */
     async addSensorDataBulk(sensorDataBulkFields: CreateSensorDataDto[]) {
         const sensorDataBulk = sensorDataBulkFields.map((sensorDataFields) => {
             const generatedId = shortid.generate();
@@ -51,18 +71,24 @@ class SensorDataDao {
         });
 
         const result: boolean = await this.SensorData.insertMany(sensorDataBulk).then((docs: any) => {
-            // TODO: LOG SUCCESS
+            log(`Successfully inserted ${docs.length} documents`)
             return true;
           }).catch((err: any) => {
-            // TODO: LOG ERROR
+            log(`Error inserting documents: ${err}`)
             return false;
           })
         
         return result;
     }
     
+    /**
+     * This function returns SensorData documents from the database
+     * @param limit - number of documents to be returned
+     * @param page - page number to be used with limit
+     * @param filterParams - query parameters to be used to filter the documents
+     * @returns array of SensorData documents
+     */
     async getSensorData(limit = 25, page = 0, filterParams: ReadSensorDataDto): Promise<SensorRecordType[]> {
-        // log if model is not defined
         if (!this.SensorData) {
             log("SensorData model is not defined");
         }
@@ -72,24 +98,9 @@ class SensorDataDao {
         director.buildSensorQuery(filterParams, limit, page);
         const query = builder.getQuery();
         // TODO: handle error
-        // TODO: log to be applied query
+        log(`Query to be applied: ${JSON.stringify(query)}`);
         return this.SensorData.aggregate(query).exec();
     }
-
-    // query data with parameters 
-    // for start and end times, 
-    // measurement type, 
-    // room, 
-    // and time resolution (raw, hourly, daily, weekly), 
-    // returning the queried data in a JSON format.
-
-    // Each parameter should be optional to provide for the user. 
-    // (The default value for resolution is "raw"). 
-    // If the resolution is not set to "raw," then you need
-    //  to find the average value of all the values that
-    //  fall within a time bucket of the chosen resolution. 
-    // For example, if the hourly resolution is chosen, 
-    // you should average all the values that occur within a specific hour.
 }
 
 export default new SensorDataDao();

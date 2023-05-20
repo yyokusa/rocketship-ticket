@@ -1,6 +1,12 @@
 import {IntermediateAggregatedDataType} from "./sensor.aggregation.strategy.custom.service";
 import SensorAggregateType from "../../types/sensor.aggregate.type";
 
+/**
+ * @description
+ * This function calculates the average value of the aggregated data.
+ * @param aggregatedData - Intermediate aggregated data.
+ * @returns {SensorAggregateType[]} Aggregated data.
+ */
 export default function calculateAverage(aggregatedData: IntermediateAggregatedDataType): SensorAggregateType[] {
     const result = [];
     let idx = 0;
@@ -21,6 +27,13 @@ export default function calculateAverage(aggregatedData: IntermediateAggregatedD
 }
 
 // TODO: use types
+/**
+ * @description
+ * This functions finds average value of the aggregated data.
+ * @param values - Intermediate aggregated data.
+ * @param customStrategyCallback - Callback function that returns a key for the aggregated data.
+ * @returns {IntermediateAggregatedDataType} Aggregated data.
+ */
 export function aggregateDataUsingCustomStrategy(values: {
     _id: string;
     datetime: Date;

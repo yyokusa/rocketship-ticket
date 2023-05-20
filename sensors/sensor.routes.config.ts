@@ -5,12 +5,24 @@ import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 import { body } from 'express-validator';
 
+/**
+ * @class SensorRoutes
+ * @extends CommonRoutesConfig
+ * @description Sensor routes configuration
+ * @method configureRoutes - configures the routes for the sensor data
+ */
 export class SensorRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
         super(app, 'SensorRoutes');
     }
 
+    /**
+     * @method configureRoutes
+     * @description configures the routes for the sensor data
+     */
     configureRoutes(): express.Application {
+        
+        // set POST /sensors endpoint
         this.app
             .route(`/sensors`)
             // TODO: test endpoint
@@ -24,6 +36,7 @@ export class SensorRoutes extends CommonRoutesConfig {
             );
 
         // TODO: maybe would secure this for internal use only
+        // set POST /sensors/bulk endpoint
         this.app
             .route(`/sensors/bulk`)
             // TODO: test endpoint
@@ -38,7 +51,7 @@ export class SensorRoutes extends CommonRoutesConfig {
             );
 
             
-        // https://stackabuse.com/get-query-strings-and-parameters-in-express-js/
+        // set GET /sensors endpoint
         this.app
             .route(`/sensors`)
             .get(

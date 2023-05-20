@@ -3,8 +3,12 @@ import { TimeResolution } from "../../dto/read.sensor_data.dto";
 import SensorSchemaType from "../../types/sensor.schema.type";
 
 /**
+ * @class ConcreteStrategyRaw
+ * @description
  * Concrete Strategies implement the algorithm while following the base Strategy
  * interface. The interface makes them interchangeable in the Context.
+ * @method getAggregate - Returns aggregated data.
+ * @property type - Time resolution type.
  */
 class ConcreteStrategyRaw implements Strategy {
     public type: TimeResolution;

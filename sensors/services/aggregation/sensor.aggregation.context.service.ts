@@ -6,8 +6,13 @@ import concreteStrategyRaw from "./sensor.aggregation.strategy.raw.service";
 import concreteStrategyHourly from "./sensor.aggregation.strategy.hourly.service";
 import concreteStrategyDaily from "./sensor.aggregation.strategy.daily.service";
 import concreteStrategyWeekly from "./sensor.aggregation.strategy.weekly.service";
+
 /**
- * The Context defines the interface of interest to clients.
+ * @class SensorAggregationContext
+ * @description The Context defines the interface of interest to clients.
+ * @property {Strategy} strategy
+ * @method setStrategy(strategy: Strategy): void
+ * @method getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[] | GroupByDataType[]
  */
 export default class SensorAggregationContext {
     /**

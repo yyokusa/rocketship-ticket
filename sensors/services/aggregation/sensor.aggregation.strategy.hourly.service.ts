@@ -2,6 +2,12 @@ import { GroupByDataType } from "./sensor.aggregation.strategy.custom.service";
 import { CustomStrategy } from "./sensor.aggregation.strategy.custom.service";
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
 
+/**
+ * @class ConcreteStrategyHourly
+ * @extends CustomStrategy
+ * @description Aggregation using custom hourly time resolution callback by utilizing the custom strategy.
+ * @method getAggregate - Returns aggregated data.
+ */
 export class ConcreteStrategyHourly extends CustomStrategy {
     public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
         return super.getAggregateCustom(data, (date: Date) => {
