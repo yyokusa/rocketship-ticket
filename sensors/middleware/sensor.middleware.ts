@@ -1,5 +1,6 @@
 import express from 'express';
 import debug from 'debug';
+import { TimeResolution } from '../dto/read.sensor_data.dto';
 
 const log: debug.IDebugger = debug('app:sensors-middleware');
 
@@ -102,6 +103,34 @@ class SensorMiddleware {
             log("Set query parameter timeResolution: " + req.body.timeResolution);
         }
         next();
+    }
+
+    areDatesTupleValid(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        // check if startTime is before endTime
+        if (req.body['startTime'] && 
+            req.body['endTime'] &&
+            req.body['startTime'] > req.body['endTime']) {
+            return res.status(400).send("startTime must be before endTime");
+        }
+        
+        return next();
+    }
+
+    isTimeResolutionValid(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        // check if timeResolution is valid by checking if its value is not one of TimeResolution enum
+        if (req.body['timeResolution'] && !Object.values(TimeResolution).includes(req.body['timeResolution'])) {
+            return res.status(400).send("timeResolution must be one of: hourly, daily, weekly");
+        }
+        
+        return next();
     }
 }
 

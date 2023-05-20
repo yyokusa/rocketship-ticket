@@ -25,7 +25,6 @@ export class SensorRoutes extends CommonRoutesConfig {
         // set POST /sensors endpoint
         this.app
             .route(`/sensors`)
-            // TODO: test endpoint
             .post(
                 body('Room').isString(),
                 body('Measurement').isString(),
@@ -39,7 +38,6 @@ export class SensorRoutes extends CommonRoutesConfig {
         // set POST /sensors/bulk endpoint
         this.app
             .route(`/sensors/bulk`)
-            // TODO: test endpoint
             .post(
                 body().isArray(),
                 body('*.Room').isString(),
@@ -60,6 +58,15 @@ export class SensorRoutes extends CommonRoutesConfig {
                 SensorMiddleware.extractMeasurement,
                 SensorMiddleware.extractRoom,
                 SensorMiddleware.extractTimeResolution,
+                body('room').optional().isString(),
+                body('measurement').optional().isString(),
+                body('value').optional().isNumeric(),
+                body('startTime').optional().isISO8601().withMessage('starTime must be a ISO8601 date.'),
+                body('endTime').optional().isISO8601().withMessage('endtime must be a ISO8601 date.'),
+                body('timeResolution').optional().isString(),
+                BodyValidationMiddleware.verifyBodyFieldsErrors,
+                SensorMiddleware.areDatesTupleValid,
+                SensorMiddleware.isTimeResolutionValid,
                 SensorController.listSensorsData
             );
         
