@@ -9,6 +9,11 @@ import { TimeResolution } from "../../dto/read.sensor_data.dto";
  * @method getAggregate - Returns aggregated data.
  */
 class ConcreteStrategyDaily extends CustomStrategy {
+    /**
+     * @method getAggregate
+     * @param {GroupByDataType[]} data - data to be aggregated
+     * @returns {GroupByDataType[]} aggregated data 
+     */
     public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
         return super.getAggregateCustom(data, (date: Date) => {
             const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());

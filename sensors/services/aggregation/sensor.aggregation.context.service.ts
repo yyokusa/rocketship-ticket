@@ -6,6 +6,9 @@ import concreteStrategyRaw from "./sensor.aggregation.strategy.raw.service";
 import concreteStrategyHourly from "./sensor.aggregation.strategy.hourly.service";
 import concreteStrategyDaily from "./sensor.aggregation.strategy.daily.service";
 import concreteStrategyWeekly from "./sensor.aggregation.strategy.weekly.service";
+import debug from "debug";
+
+const log: debug.IDebugger = debug("app:sensor-aggregation-context-service");
 
 /**
  * @class SensorAggregationContext
@@ -60,7 +63,7 @@ export default class SensorAggregationContext {
      * implementing multiple versions of the algorithm on its own.
      */
     public getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[] | GroupByDataType[] {
-        console.log(`Context: aggregating data using the ${this.strategy.type} strategy`);
+        log(`Context: aggregating data using the ${this.strategy.type} strategy`);
         return this.strategy.getAggregate(data);
     }
 }

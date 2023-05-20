@@ -13,6 +13,11 @@ import SensorSchemaType from "../../types/sensor.schema.type";
 class ConcreteStrategyRaw implements Strategy {
     public type: TimeResolution;
 
+    /**
+     * @method getAggregate
+     * @param {GroupByDataType[]} data - data to be aggregated
+     * @returns {SensorSchemaType[]} aggregated data
+     */
     public getAggregate(data: SensorSchemaType[]): SensorSchemaType[] {
         return data;
     }

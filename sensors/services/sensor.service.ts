@@ -15,14 +15,31 @@ import SensorRecordType from '../types/sensor.record.type';
  */
 //@ts-ignore
 class SensorService implements CRUD {
+    /**
+     * @method create
+     * @param resource - sensor data to be created
+     * @returns - id of the created sensor data entry
+     */
     async create(resource: CreateSensorDataDto) {
         return SensorDao.addSensorData(resource);
     }
     
+    /**
+     * @method createBulk
+     * @param resources - sensor data to be created
+     * @returns - result of the bulk insert
+     */
     async createBulk(resources: CreateSensorDataDto[]) {
         return SensorDao.addSensorDataBulk(resources);
     }
 
+    /**
+     * @method list
+     * @param limit - number of records to be returned
+     * @param page - page number
+     * @param filterParams - filter parameters
+     * @returns - list of sensor data entries
+     */
     async list(limit: number, page: number, filterParams: ReadSensorDataDto) {
         let rawSensorData: SensorRecordType[] = await SensorDao.getSensorData(limit, page, filterParams);
         // set aggregation strategy based on the timeResolution parameter

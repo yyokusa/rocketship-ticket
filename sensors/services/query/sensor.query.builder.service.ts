@@ -111,6 +111,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
 
     /**
+     * @method addGroupBy
+     * @description 
      * This method adds group by to the query in case aggregation is needed.
      */
     public addGroupBy() {
