@@ -60,7 +60,7 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
         }
         // check if query is empty
         if (this.query.length === 0)
-            this.query.push({$match: {$and: [{Datetime: {$gte: endTime}}]}});
+            this.query.push({$match: {$and: [{Datetime: {$lte: endTime}}]}});
         else
             this.query[0].$match.$and.push({Datetime: {$lte: endTime}});
         
