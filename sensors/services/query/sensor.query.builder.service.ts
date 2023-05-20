@@ -12,7 +12,6 @@ import SensorSchemaType from "../../types/sensor.schema.type";
  */
 export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     private model!: SensorQueryModelType;
-    // private query!: Query.Aggregate<SensorSchemaType[]>;
     private query!: any;
     
     constructor(model: SensorQueryModelType) {
@@ -108,8 +107,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
         })
     }
 
-    public getQuery(): Query.Aggregate<SensorSchemaType[]> {
-        const result = this.query as Query.Aggregate<SensorSchemaType[]>;
+    public getQuery(): any {
+        const result = this.query;
         this.reset(this.model);
         return result;
     }

@@ -1,12 +1,8 @@
 import SensorDao from '../daos/sensor_data.dao';
 import { CRUD } from '../../common/interfaces/crud.interface';
 import { CreateSensorDataDto } from '../dto/create.sensor_data.dto';
-import { PutSensorDataDto } from '../dto/put.sensor_data.dto';
-import { PatchSensorDataDto } from '../dto/patch.sensor_data.dto';
-import { ReadSensorDataDto, TimeResolution } from '../dto/read.sensor_data.dto';
-import SensorSchemaType from '../types/sensor.schema.type';
+import { ReadSensorDataDto } from '../dto/read.sensor_data.dto';
 import SensorAggregationContext from './aggregation/sensor.aggregation.context.service';
-import { raw } from 'express';
 import SensorRecordType from '../types/sensor.record.type';
 /**
  *  UsersService as a service singleton,

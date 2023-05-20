@@ -1,9 +1,11 @@
-import { ReadSensorDataDto, TimeResolution } from "../../dto/read.sensor_data.dto";
-import SensorAggregateType from "../../types/sensor.aggregate.type";
+import { TimeResolution } from "../../dto/read.sensor_data.dto";
 import SensorRecordType from "../../types/sensor.record.type";
-import SensorSchemaType from "../../types/sensor.schema.type";
 import Strategy from "./sensor.aggregation.strategy.interface";
-import { ConcreteStrategyRaw, ConcreteStrategyHourly, ConcreteStrategyDaily, ConcreteStrategyWeekly, GroupByDataType } from "./sensor.aggregation.strategy.service";
+import { GroupByDataType } from "./sensor.aggregation.strategy.custom.service";
+import concreteStrategyRaw from "./sensor.aggregation.strategy.raw.service";
+import concreteStrategyHourly from "./sensor.aggregation.strategy.hourly.service";
+import concreteStrategyDaily from "./sensor.aggregation.strategy.daily.service";
+import concreteStrategyWeekly from "./sensor.aggregation.strategy.weekly.service";
 /**
  * The Context defines the interface of interest to clients.
  */
@@ -24,19 +26,19 @@ export default class SensorAggregationContext {
         // set strategy
         switch (timeResolution) {
             case TimeResolution.raw:
-                this.strategy = new ConcreteStrategyRaw();
+                this.strategy = concreteStrategyRaw;
                 break;
             case TimeResolution.hourly:
-                this.strategy = new ConcreteStrategyHourly();
+                this.strategy = concreteStrategyHourly;
                 break;
             case TimeResolution.daily:
-                this.strategy = new ConcreteStrategyDaily();
+                this.strategy = concreteStrategyDaily;
                 break;
             case TimeResolution.weekly:
-                this.strategy = new ConcreteStrategyWeekly();
+                this.strategy = concreteStrategyWeekly;
                 break;
             default:
-                this.strategy = new ConcreteStrategyRaw();
+                this.strategy = concreteStrategyRaw;
                 break;
         }
     }
