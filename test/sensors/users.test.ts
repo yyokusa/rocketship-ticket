@@ -8,11 +8,9 @@ const roomB = "Room B";
 const roomC = "Room C";
 const measurementTemperature = "Temperature";
 const measurementHumidity = "Humidity";
-const datetime = "2022-08-23T23:05:12Z";
 const startTime = "2022-08-26T16:33:55Z";
 const endTime = "2022-08-26T19:25:30Z";
 const endTime2 = "2022-08-29T11:19:00Z";
-const value = 22.8;
 
 const sensorData = {
     Value: 22.8,
@@ -290,6 +288,36 @@ describe('sensors endpoints', function () {
         expect(res.body).to.be.an('array');
         expect(res.body).to.have.lengthOf(1);
         expect(res.body[0].values).to.have.lengthOf(2);
+    });
+
+
+    // error tests
+    it('should return 400 when startTime is not a valid date', async function () {
+        const res = await request
+            .get(`/sensors?startTime=notadate`)
+            .send();
+        expect(res.status).to.equal(400);
+    });
+
+    it('should return 400 when endTime is not a valid date', async function () {
+        const res = await request
+            .get(`/sensors?endTime=notadate`)
+            .send();
+        expect(res.status).to.equal(400);
+    });
+
+    it('should return 400 when startTime is after endTime', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${endTime}&endTime=${startTime}`)
+            .send();
+        expect(res.status).to.equal(400);
+    });
+
+    it('should return 400 when timeResolution is not valid', async function () {
+        const res = await request
+            .get(`/sensors?timeResolution=notvalid`)
+            .send();
+        expect(res.status).to.equal(400);
     });
 
 });
