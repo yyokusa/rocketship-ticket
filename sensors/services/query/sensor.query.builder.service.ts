@@ -88,11 +88,11 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
             // TODO: log
             return;
         }
-        if (!filteredByMeasurement && !filteredByRoom)
+        if (filteredByMeasurement && filteredByRoom)
             return;
 
 
-        if (filteredByMeasurement && filteredByRoom) {
+        if (!filteredByMeasurement && !filteredByRoom) {
             this.query.push({
                 $group: {
                     _id: {
@@ -108,7 +108,7 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
                     }
                 }
             })
-        } else if (filteredByMeasurement) {
+        } else if (filteredByRoom) {
         this.query.push({
             $group: {
                 _id: {
@@ -124,7 +124,7 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
                 }
             }
         })
-        } else if (filteredByRoom) {
+        } else if (filteredByMeasurement) {
             this.query.push({
                 $group: {
                     _id: {
