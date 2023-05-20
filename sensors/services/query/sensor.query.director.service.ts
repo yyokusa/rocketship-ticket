@@ -50,7 +50,10 @@ class SensorQueryDirector {
         console.log("\n\n\n----------limit, page: ----------\n", limit, page);
         this.builder.addLimitSkip(limit, page);
         // add group by
-        if (room || measurement) {
+        // TODO: refactor for easier extensibility maybe
+        const filterByMeasurement = Boolean(measurement)
+        const filterByRoom = Boolean(room)
+        if (filterByMeasurement != filterByRoom) {
             console.log("\n\n\n----------adding group by: ----------\n");
             this.builder.addGroupBy(Boolean(room), Boolean(measurement));
         }
