@@ -1,5 +1,5 @@
 import { CreateSensorDataDto  } from "../dto/create.sensor_data.dto";
-import { ReadSensorDataDto, TimeResolution  } from "../dto/read.sensor_data.dto";
+import { ReadSensorDataDto  } from "../dto/read.sensor_data.dto";
 import mongooseService from '../../common/services/mongoose.service';
 import shortid from 'shortid';
 import debug from 'debug';
@@ -10,11 +10,7 @@ import ConcreteSensorQueryBuilder from "../services/query/sensor.query.builder.s
 import SensorQueryBuilder from "../services/query/sensor.query.builder.interface";
 import SensorRecordType from "../types/sensor.record.type";
 
-const log: debug.IDebugger = debug('app:in-memory-dao');
-
-// https://sequelize.org/ to be used in the future
-// https://mongoosejs.com/ to be used in the future
-// https://tech.gc.com/dependency-injection/ instead of singleton pattern
+const log: debug.IDebugger = debug('app:mongo-dao');
 
 class SensorDataDao {
 
