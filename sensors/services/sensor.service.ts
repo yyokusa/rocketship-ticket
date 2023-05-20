@@ -7,6 +7,7 @@ import { ReadSensorDataDto, TimeResolution } from '../dto/read.sensor_data.dto';
 import SensorSchemaType from '../types/sensor.schema.type';
 import SensorAggregationContext from './aggregation/sensor.aggregation.context.service';
 import { raw } from 'express';
+import SensorRecordType from '../types/sensor.record.type';
 /**
  *  UsersService as a service singleton,
  *  the same pattern we used with our DAO.
@@ -23,14 +24,13 @@ class SensorService implements CRUD {
     }
 
     async list(limit: number, page: number, filterParams: ReadSensorDataDto) {
-        let rawSensorData: SensorSchemaType[] = await SensorDao.getSensorData(limit, page, filterParams);
+        let rawSensorData: SensorRecordType[] = await SensorDao.getSensorData(limit, page, filterParams);
         // set aggregation strategy based on the timeResolution parameter
-        const groupByRoom = Boolean(filterParams.room);
-        const groupByMeasurement = Boolean(filterParams.measurement);
-        const sensorAggregationContext = new SensorAggregationContext(filterParams.timeResolution, groupByRoom, groupByMeasurement);
+        const sensorAggregationContext = new SensorAggregationContext(filterParams.timeResolution);
         // apply aggregation strategy
         const sensorData = sensorAggregationContext.getAggregateForSetStrategy(rawSensorData);
         return sensorData;
+        // return rawSensorData;
     }
 }
 

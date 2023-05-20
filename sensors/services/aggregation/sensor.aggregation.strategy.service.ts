@@ -7,49 +7,27 @@ import sensorMiddleware from "../../middleware/sensor.middleware";
 // TODO: rename lots of type stuff
 
 type IntermediateAggregatedDataType = { [key: string]: { count: number; sum: number; } };
-type IntermediateGroupByDataType = { [key: string]: { room: string; measurement: string; values: {room?: string; measurement?: string; Datetime: Date; Value: number;}[] } };
-export type GroupByDataType = { room?: string; measurement?: string; values: {Datetime: Date; Value: number; }[] };
-
-function groupBy(data: SensorSchemaType[], byRoom:boolean = false, byMeasurement:boolean = false): GroupByDataType[] {
-    const grouped = data.reduce((r, { Room: room, Measurement: measurement, ...rest }: SensorSchemaType) => {
-        let key = "";
-        if (byRoom && byMeasurement) {
-            key = `${room}-${measurement}`;
-            r[key] = r[key] || { room, measurement, values: [] };
-            r[key]["values"].push(rest)
-        } else if (byRoom) {
-            key = room;
-            r[key] = r[key] || { room, values: [] };
-            r[key]["values"].push({measurement, ...rest})
-        } else if (byMeasurement) {
-            key = measurement;
-            r[key] = r[key] || { measurement, values: [] };
-            r[key]["values"].push({room , ...rest})
-        }
-
-        return r;
-      }, {} as IntermediateGroupByDataType);
-      
-      const grouppedSensorsData = Object.values(grouped);
-      console.log(grouppedSensorsData)
-      return grouppedSensorsData;
-}
-
+export type GroupByDataType = { _id: {room?: string; measurement?: string;}, values: {
+        _id: string;
+        datetime: Date;
+        room: string;
+        measurement: string;
+        value: number;
+    }[] };
 
 
 abstract class CustomStrategy implements Strategy {
+    
     public type: TimeResolution; 
-    public groupByMeasurement: boolean = false;
-    public groupByRoom: boolean = false;
 
-    abstract getAggregate(data: SensorSchemaType[]): GroupByDataType[];
+    abstract getAggregate(data: GroupByDataType[]): GroupByDataType[];
 
-    public getAggregateCustom(data: SensorSchemaType[], customStrategyCallback: (date: Date) => string): GroupByDataType[] {
+    public getAggregateCustom(data: GroupByDataType[], customStrategyCallback: (date: Date) => string): GroupByDataType[]{
         if (data.length === 0) {
             return [];
         }
 
-        const grouppedSensorsData: GroupByDataType[] = groupBy(data, this.groupByRoom, this.groupByMeasurement);     
+        const grouppedSensorsData: GroupByDataType[] = data;
         let toBeReturned: GroupByDataType[] = [];
         for (const sensorData of grouppedSensorsData) {
             
@@ -58,7 +36,7 @@ abstract class CustomStrategy implements Strategy {
             const aggregatedData: IntermediateAggregatedDataType = {};
     
             for (const entry of sensorData.values) {
-                const date = entry.Datetime;
+                const date = entry.datetime;
                 const key = customStrategyCallback(date);
             
                 if (!aggregatedData[key]) {
@@ -66,34 +44,56 @@ abstract class CustomStrategy implements Strategy {
                 }
             
                 aggregatedData[key].count++;
-                aggregatedData[key].sum += entry.Value;
+                aggregatedData[key].sum += entry.value;
             }
             const result: SensorAggregateType[] = calculateAverage(aggregatedData);
-            if (sensorData.measurement && sensorData.room) {
+            if (sensorData._id.measurement && sensorData._id.room) {
                 toBeReturned.push({
-                    measurement: sensorData.measurement,
-                    room: sensorData.room,
-                    values: result
+                    _id: {
+                        measurement: sensorData._id.measurement,
+                        room: sensorData._id.room,
+                    },
+                    values: result.map((entry: SensorAggregateType) => {
+                        return {
+                            measurement: sensorData._id.measurement ?? "",
+                            room: sensorData._id.room ?? "",
+                            ...entry
+                        };
+                    })
                 });
-            } else if (sensorData.measurement) {
+            } else if (sensorData._id.measurement) {
                 toBeReturned.push({
-                    measurement: sensorData.measurement,
-                    values: result
+                    _id: {
+                        measurement: sensorData._id.measurement,
+                    },
+                    values: result.map((entry: SensorAggregateType) => {
+                        return {
+                            measurement: sensorData._id.measurement ?? "",
+                            room: sensorData._id.room ?? "",
+                            ...entry
+                        };
+                    })
                 });
-            } else if (sensorData.room) {
+            } else if (sensorData._id.room) {
                 toBeReturned.push({
-                    room: sensorData.room,
-                    values: result
+                    _id: {
+                        room: sensorData._id.room,
+                    },
+                    values: result.map((entry: SensorAggregateType) => {
+                        return {
+                            measurement: sensorData._id.measurement ?? "",
+                            room: sensorData._id.room ?? "",
+                            ...entry
+                        };
+                    })
                 });
             }
         };
         return toBeReturned;
     }
 
-    constructor(timeResolution: TimeResolution, groupByMeasurement: boolean = false, groupByRoom: boolean = false) {
+    constructor(timeResolution: TimeResolution) {
         this.type = timeResolution;
-        this.groupByMeasurement = groupByMeasurement;
-        this.groupByRoom = groupByRoom;
     }
 }
 /**
@@ -113,7 +113,7 @@ export class ConcreteStrategyRaw implements Strategy {
 }
 
 export class ConcreteStrategyHourly extends CustomStrategy {
-    public getAggregate(data: SensorSchemaType[]): GroupByDataType[] {
+    public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
         return super.getAggregateCustom(data, (date: Date) => {
             const hourStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours());
             const key = hourStart.toISOString();
@@ -121,13 +121,13 @@ export class ConcreteStrategyHourly extends CustomStrategy {
         });
     }
 
-    constructor(groupByMeasurement: boolean = false, groupByRoom: boolean = false) {
-        super(TimeResolution.hourly, groupByMeasurement, groupByRoom);
+    constructor() {
+        super(TimeResolution.hourly);
     }
 }
 
 export class ConcreteStrategyDaily extends CustomStrategy {
-    public getAggregate(data: SensorSchemaType[]): GroupByDataType[] {
+    public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
         return super.getAggregateCustom(data, (date: Date) => {
             const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
             const key = dayStart.toISOString();
@@ -135,13 +135,13 @@ export class ConcreteStrategyDaily extends CustomStrategy {
         });
     }
 
-    constructor(groupByMeasurement: boolean = false, groupByRoom: boolean = false) {
-        super(TimeResolution.daily, groupByMeasurement, groupByRoom);
+    constructor() {
+        super(TimeResolution.daily);
     }
 }
 
 export class ConcreteStrategyWeekly extends CustomStrategy {
-    public getAggregate(data: SensorSchemaType[]): GroupByDataType[] {
+    public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
         return super.getAggregateCustom(data, (date: Date) => {
             // TODO: add corner case handling
             if (date === undefined) {
@@ -154,8 +154,8 @@ export class ConcreteStrategyWeekly extends CustomStrategy {
         });
     }
 
-    constructor(groupByMeasurement: boolean = false, groupByRoom: boolean = false) {
-        super(TimeResolution.weekly, groupByMeasurement, groupByRoom);
+    constructor() {
+        super(TimeResolution.weekly);
     }
 }
   
@@ -167,11 +167,12 @@ function calculateAverage(aggregatedData: IntermediateAggregatedDataType): Senso
       const average = value.sum / value.count;
       result.push(
             {
-                _id: idx++, 
-                Datetime: new Date(key), 
-                Value: average, 
+                _id: idx.toString(), 
+                datetime: new Date(key), 
+                value: average, 
             }
         );
+        idx++;
     }
   
     return result;

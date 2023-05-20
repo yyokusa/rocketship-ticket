@@ -8,6 +8,7 @@ import SensorQueryModelType from "../types/sensor.query.model.type";
 import SensorQueryDirector from "../services/query/sensor.query.director.service";
 import ConcreteSensorQueryBuilder from "../services/query/sensor.query.builder.service";
 import SensorQueryBuilder from "../services/query/sensor.query.builder.interface";
+import SensorRecordType from "../types/sensor.record.type";
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
 
@@ -64,7 +65,7 @@ class SensorDataDao {
         return result;
     }
     
-    async getSensorData(limit = 25, page = 0, filterParams: ReadSensorDataDto): Promise<SensorSchemaType[]> {
+    async getSensorData(limit = 25, page = 0, filterParams: ReadSensorDataDto): Promise<SensorRecordType[]> {
         // log if model is not defined
         if (!this.SensorData) {
             log("SensorData model is not defined");
@@ -75,7 +76,7 @@ class SensorDataDao {
         director.buildSensorQuery(filterParams, limit, page);
         const query = builder.getQuery();
         // TODO: handle error
-        console.log("\n\n\n query: ", query, "\n\n\n");
+        // TODO: log to be applied query
         return this.SensorData.aggregate(query).exec();
     }
 

@@ -7,7 +7,8 @@ import Query from 'mongoose';
  */
 interface SensorQueryBuilder {
     addLimitSkip(limit: number, page: number): unknown;
-    addGroupBy(arg0: boolean, arg1: boolean): void;
+    // addGroupBy(arg0: boolean, arg1: boolean): void;
+    addGroupBy(timeResolutionApplied: boolean): void;
     addStartTimeFilter(startTime: Date): void;
     addEndTimeFilter(endTime: Date): void;
     addMeasurementTypeFilter(measurementType: string): void; 

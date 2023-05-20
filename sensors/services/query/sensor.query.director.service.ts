@@ -28,7 +28,7 @@ class SensorQueryDirector {
      */
     public buildSensorQuery(filterParams: ReadSensorDataDto, limit: number, page: number): void {
         // extract filterParams
-        const {room: room, measurement: measurement, startTime, endTime} = filterParams;
+        const {room: room, measurement: measurement, startTime, endTime, timeResolution} = filterParams;
         // if optionals are not set, do not call those filter methods from builder
         if (startTime) {
             console.log("\n\n\n----------adding startTime filter: ----------\n", startTime);
@@ -46,16 +46,15 @@ class SensorQueryDirector {
             console.log("\n\n\n----------adding room filter: ----------\n", room);
             this.builder.addRoomFilter(room);
         }
+        
         // add limit and skip
         console.log("\n\n\n----------limit, page: ----------\n", limit, page);
         this.builder.addLimitSkip(limit, page);
-        // add group by
-        // TODO: refactor for easier extensibility maybe
-        const filterByMeasurement = Boolean(measurement)
-        const filterByRoom = Boolean(room)
-        if (filterByMeasurement != filterByRoom) {
+
+        // add group by because of time resolution
+        if (timeResolution) {
             console.log("\n\n\n----------adding group by: ----------\n");
-            this.builder.addGroupBy(Boolean(room), Boolean(measurement));
+            this.builder.addGroupBy(true);
         }
     }
 }

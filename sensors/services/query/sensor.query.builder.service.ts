@@ -83,40 +83,27 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
         console.log("\n\n\n Pushed limit: " + limit + ", and skip: " + limit*page + " \n\n\n")
     }
 
-    public addGroupBy(filteredByRoom: boolean = false, filteredByMeasurement: boolean = false) {
+    // public addGroupBy(filteredByRoom: boolean = false, filteredByMeasurement: boolean = false) {
+    public addGroupBy(timeResolutionApplied: boolean = false) {
         if (!this.model) {
             // TODO: log
             return;
         }
 
-        if (filteredByRoom) {
+        if (timeResolutionApplied) {
             this.query.push({
                 $group: {
                     _id: {
-                        Measurement: "$Measurement",
+                        room: "$Room",
+                        measurement: "$Measurement",
                     },
                     values: {
                         $push: {
                             _id: "$_id", 
-                            Datetime: "$Datetime",
-                            Room: "$Room",
-                            Value: "$Value"
-                        }
-                    }
-                }
-            })
-        } else if (filteredByMeasurement) {
-            this.query.push({
-                $group: {
-                    _id: {
-                        Room: "$Room",
-                    },
-                    values: {
-                        $push: {
-                            _id: "$_id", 
-                            Datetime: "$Datetime",
-                            Measurement: "$Measurement",
-                            Value: "$Value"
+                            datetime: "$Datetime",
+                            room: "$Room",
+                            measurement: "$Measurement",
+                            value: "$Value"
                         }
                     }
                 }
