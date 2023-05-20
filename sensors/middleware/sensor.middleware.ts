@@ -105,6 +105,14 @@ class SensorMiddleware {
         next();
     }
 
+    /**
+     * Checks if the startTime and endTime query parameters are valid together
+     * @param req - Express request object
+     * @param res - Express response object
+     * @param next - Express next function
+     * @returns 400 if startTime is after endTime
+     * @returns next() if startTime is before endTime
+     */
     areDatesTupleValid(
         req: express.Request,
         res: express.Response,
@@ -120,6 +128,14 @@ class SensorMiddleware {
         return next();
     }
 
+    /**
+     * Checks if the timeResolution query parameter is valid
+     * @param req - Express request object
+     * @param res - Express response object
+     * @param next - Express next function
+     * @returns 400 if timeResolution is not one of TimeResolution enum
+     * @returns next() if timeResolution is one of TimeResolution enum
+     */
     isTimeResolutionValid(
         req: express.Request,
         res: express.Response,
