@@ -1,6 +1,7 @@
-import { CustomStrategy, FinalAggregatedDataRecord } from "./sensor.aggregation.strategy.custom.service";
+import { CustomStrategy } from "./sensor.aggregation.strategy.custom.service";
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
 import { GrouppedSensorRecordType } from "../../types/sensor.record.type";
+import { FinalAggregatedDataRecord } from "../../types/sensor.aggregate.record.type";
 
 /**
  * @class ConcreteStrategyDaily

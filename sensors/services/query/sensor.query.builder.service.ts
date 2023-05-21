@@ -141,10 +141,10 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
                 values: {
                     $push: {
                         _id: "$_id", 
-                        datetime: "$Datetime",
-                        room: "$Room",
-                        measurement: "$Measurement",
-                        value: "$Value"
+                        Datetime: "$Datetime",
+                        Room: "$Room",
+                        Measurement: "$Measurement",
+                        Value: "$Value"
                     }
                 }
             }

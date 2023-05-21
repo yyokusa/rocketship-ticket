@@ -1,5 +1,5 @@
-import { FinalAggregatedDataRecord } from "../services/aggregation/sensor.aggregation.strategy.custom.service";
 import SensorSchemaType from "../types/sensor.schema.type";
+import { FinalAggregatedDataRecord } from "./sensor.aggregate.record.type";
 
 /**
  * @typedef GrouppedSensorRecordType
