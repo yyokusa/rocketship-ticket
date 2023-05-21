@@ -13,6 +13,9 @@ const startTime = "2022-08-26T16:33:55Z";
 const endTime = "2022-08-26T19:25:30Z";
 const endTime2 = "2022-08-29T11:19:00Z";
 
+const startTime2 = "2022-08-23T13:11:25-01:00";
+const endTime3 = "2022-08-23T23:06:12Z";
+
 const sensorData = {
     Value: 22.8,
     Datetime: "2022-08-23T22:06:12Z",
@@ -321,6 +324,21 @@ describe('sensors endpoints', function () {
             .send();
         expect(res.status).to.equal(400);
         expect(res.body.message).to.equal("timeResolution must be one of " + Object.values(TimeResolution));
+    });
+
+    // Make sure you handle data coming in from different time zones!
+    it('should handle data coming in from different time zones', async function () {
+        const res = await request
+            .get(`/sensors?startTime=${startTime2}&endTime=${endTime3}`)
+            .send();
+        expect(res.status).to.equal(200);
+        expect(res.body).not.to.be.empty;
+        expect(res.body).to.be.an('array');
+        expect(res.body).to.have.lengthOf(2);
+        expect(res.body[0]).to.have.property('_id');
+        expect(res.body[0]).to.have.property('Value');
+        expect(res.body[0]).to.have.property('Datetime');
+        expect(res.body[0]).to.have.property('Room');
     });
 
 });
