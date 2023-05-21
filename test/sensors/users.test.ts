@@ -2,6 +2,7 @@ import app from '../../app';
 import supertest from 'supertest';
 import { expect } from 'chai';
 import mongoose from 'mongoose';
+import { TimeResolution } from '../../sensors/dto/read.sensor_data.dto';
 
 const roomA = "Room A";
 const roomB = "Room B";
@@ -311,6 +312,7 @@ describe('sensors endpoints', function () {
             .get(`/sensors?startTime=${endTime}&endTime=${startTime}`)
             .send();
         expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal("startTime must be before endTime");
     });
 
     it('should return 400 when timeResolution is not valid', async function () {
@@ -318,6 +320,7 @@ describe('sensors endpoints', function () {
             .get(`/sensors?timeResolution=notvalid`)
             .send();
         expect(res.status).to.equal(400);
+        expect(res.body.message).to.equal("timeResolution must be one of " + Object.values(TimeResolution));
     });
 
 });

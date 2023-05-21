@@ -134,7 +134,9 @@ class SensorMiddleware {
         if (req.body['startTime'] && 
             req.body['endTime'] &&
             req.body['startTime'] > req.body['endTime']) {
-            return res.status(400).send("startTime must be before endTime");
+            return res.status(400).send({
+                message: "startTime must be before endTime"
+            });
         }
         
         return next();
@@ -157,7 +159,9 @@ class SensorMiddleware {
     ) {
         // check if timeResolution is valid by checking if its value is not one of TimeResolution enum
         if (req.body['timeResolution'] && !Object.values(TimeResolution).includes(req.body['timeResolution'])) {
-            return res.status(400).send("timeResolution must be one of: hourly, daily, weekly");
+            return res.status(400).send({
+                message: "timeResolution must be one of " + Object.values(TimeResolution)
+            });
         }
         
         return next();
