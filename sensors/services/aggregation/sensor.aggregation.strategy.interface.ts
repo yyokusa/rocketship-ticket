@@ -7,7 +7,7 @@ import SensorRecordType from "../../types/sensor.record.type";
  * The Strategy interface declares operations common to all supported versions of some algorithm.
  * The Context uses this interface to call the algorithm defined by Concrete Strategies.
  * @method getAggregate
- * @method type
+ * @property type
  */
 interface Strategy {
     getAggregate(data: SensorRecordType[]): SensorRecordType[];
