@@ -11,15 +11,31 @@
  * @method addRoomFilter - Adds room filter to the query.
  * @method getQuery - Returns the query.
  */
-interface SensorQueryBuilder {
-    addLimitSkip(limit: number, page: number): unknown;
-    addGroupBy(): void;
+interface SensorQueryBuilder extends BaseFilterable, TimeFilterable, MeasurementFilterable, RoomFilterable, LimitSkipFilterable, GroupFilterable {}
+
+interface BaseFilterable {
+    getQuery(): any;
+}
+
+interface TimeFilterable {
     addStartTimeFilter(startTime: Date): void;
     addEndTimeFilter(endTime: Date): void;
-    addMeasurementTypeFilter(measurementType: string): void; 
+}
+
+interface MeasurementFilterable {
+    addMeasurementTypeFilter(measurementType: string): void;
+}
+
+interface RoomFilterable {
     addRoomFilter(room: string): void;
-    getQuery(): any;
-    
+}
+
+interface LimitSkipFilterable {
+    addLimitSkip(limit: number, page: number): void;
+}
+
+interface GroupFilterable {
+    addGroupBy(): void;
 }
 
 export default SensorQueryBuilder;
