@@ -4,6 +4,11 @@
 ### Project Start Date : 17 May 2023
 ### Completion Date: 21 May 2023
 
+## How To Run?
+1. run `docker compose up`
+2. import postman collection, use resource_creation json files and play with the service
+3. OR - execute unit tests using `CMD [ "npm", "run", "test-debug" ]` in Dockerfile
+3. OR - npm install and run locally
 
 ## Introduction
 
