@@ -1,7 +1,6 @@
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
 import SensorRecordType from "../../types/sensor.record.type";
 import Strategy from "./sensor.aggregation.strategy.interface";
-import { GroupByDataType } from "./sensor.aggregation.strategy.custom.service";
 import concreteStrategyRaw from "./sensor.aggregation.strategy.raw.service";
 import concreteStrategyHourly from "./sensor.aggregation.strategy.hourly.service";
 import concreteStrategyDaily from "./sensor.aggregation.strategy.daily.service";
@@ -15,7 +14,7 @@ const log: debug.IDebugger = debug("app:sensor-aggregation-context-service");
  * @description The Context defines the interface of interest to clients.
  * @property {Strategy} strategy
  * @method setStrategy(strategy: Strategy): void
- * @method getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[] | GroupByDataType[]
+ * @method getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[]
  */
 export default class SensorAggregationContext {
     /**
@@ -67,9 +66,9 @@ export default class SensorAggregationContext {
      * The Context delegates work to the Strategy object instead of
      * implementing multiple versions of the algorithm on its own.
      * @param data - SensorRecordType[]
-     * @returns SensorRecordType[] | GroupByDataType[]
+     * @returns SensorRecordType[]
      */
-    public getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[] | GroupByDataType[] {
+    public getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[] {
         log(`Context: aggregating data using the ${this.strategy.type} strategy`);
         return this.strategy.getAggregate(data);
     }

@@ -1,6 +1,6 @@
-import { GroupByDataType } from "./sensor.aggregation.strategy.custom.service";
-import { CustomStrategy } from "./sensor.aggregation.strategy.custom.service";
+import { CustomStrategy, FinalAggregatedDataRecord } from "./sensor.aggregation.strategy.custom.service";
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
+import { GrouppedSensorRecordType } from "../../types/sensor.record.type";
 
 /**
  * @class ConcreteStrategyDaily
@@ -11,10 +11,10 @@ import { TimeResolution } from "../../dto/read.sensor_data.dto";
 class ConcreteStrategyDaily extends CustomStrategy {
     /**
      * @method getAggregate
-     * @param {GroupByDataType[]} data - data to be aggregated
-     * @returns {GroupByDataType[]} aggregated data 
+     * @param {GrouppedSensorRecordType[]} data - data to be aggregated
+     * @returns {FinalAggregatedDataRecord[]} aggregated data 
      */
-    public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
+    public getAggregate(data: GrouppedSensorRecordType[]): FinalAggregatedDataRecord[] {
         return super.getAggregateCustom(data, (date: Date) => {
             const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
             const key = dayStart.toISOString();

@@ -1,6 +1,7 @@
 import Strategy from "./sensor.aggregation.strategy.interface";
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
 import SensorSchemaType from "../../types/sensor.schema.type";
+import { GrouppedSensorRecordType } from "../../types/sensor.record.type";
 
 /**
  * @class ConcreteStrategyRaw
@@ -15,7 +16,7 @@ class ConcreteStrategyRaw implements Strategy {
 
     /**
      * @method getAggregate
-     * @param {GroupByDataType[]} data - data to be aggregated
+     * @param {GrouppedSensorRecordType[]} data - data to be aggregated
      * @returns {SensorSchemaType[]} aggregated data
      */
     public getAggregate(data: SensorSchemaType[]): SensorSchemaType[] {

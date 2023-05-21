@@ -1,6 +1,5 @@
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
 import SensorRecordType from "../../types/sensor.record.type";
-import {GroupByDataType} from "./sensor.aggregation.strategy.custom.service";
 
 /**
  * @interface Strategy
@@ -11,7 +10,7 @@ import {GroupByDataType} from "./sensor.aggregation.strategy.custom.service";
  * @method type
  */
 interface Strategy {
-    getAggregate(data: SensorRecordType[] | GroupByDataType[]): SensorRecordType[] | GroupByDataType[];
+    getAggregate(data: SensorRecordType[]): SensorRecordType[];
     type: TimeResolution;
 }
 

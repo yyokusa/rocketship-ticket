@@ -6,8 +6,8 @@
  */
 export type SensorAggregateType = {
     _id:string;
-    datetime: Date;
-    value: number;
+    Datetime: Date;
+    Value: number;
 }
 
 

@@ -1,6 +1,7 @@
-import { GroupByDataType } from "./sensor.aggregation.strategy.custom.service";
 import { CustomStrategy } from "./sensor.aggregation.strategy.custom.service";
 import { TimeResolution } from "../../dto/read.sensor_data.dto";
+import { GrouppedSensorRecordType } from "../../types/sensor.record.type";
+import { FinalAggregatedDataRecord } from "../../types/sensor.aggregate.record.type";
 
 /**
  * @class ConcreteStrategyHourly
@@ -11,10 +12,10 @@ import { TimeResolution } from "../../dto/read.sensor_data.dto";
 export class ConcreteStrategyHourly extends CustomStrategy {
     /**
      * @method getAggregate
-     * @param {GroupByDataType[]} data - data to be aggregated
-     * @returns {GroupByDataType[]} aggregated data 
+     * @param {GrouppedSensorRecordType[]} data - data to be aggregated
+     * @returns {FinalAggregatedDataRecord[]} aggregated data 
      */
-    public getAggregate(data: GroupByDataType[]): GroupByDataType[] {
+    public getAggregate(data: GrouppedSensorRecordType[]): FinalAggregatedDataRecord[] {
         return super.getAggregateCustom(data, (date: Date) => {
             const hourStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours());
             const key = hourStart.toISOString();
