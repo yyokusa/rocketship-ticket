@@ -44,7 +44,7 @@ if (!process.env.DEBUG) {
 // initialize the logger with the above configuration
 app.use(expressWinston.logger(loggerOptions));
 
-// here we are adding the UserRoutes to our array,
+// here we are adding the SensorRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
 routes.push(new SensorRoutes(app));
 
@@ -62,16 +62,3 @@ export default server.listen(port, () => {
     // always want to know when the server is done starting up
     console.log(runningMessage);
 });
-
-// TODO:
-// Security (All Projects Should Wear a Helmet)
-
-// When working with Express.js, the documentation is a must-read, 
-// particularly its security best practices. At minimum, it’s worth pursuing:
-// https://expressjs.com/en/advanced/best-practice-security.html
-
-//     Configuring TLS support
-//     Adding rate-limiting middleware
-//     Ensuring npm dependencies are secure (readers may want to start with npm audit or go deeper with snyk)
-//     Using the Helmet library to help protect against common security vulnerabilities
-

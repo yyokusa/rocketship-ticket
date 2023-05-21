@@ -4,6 +4,11 @@ import { CreateSensorDataDto } from '../dto/create.sensor_data.dto';
 import { ReadSensorDataDto } from '../dto/read.sensor_data.dto';
 import SensorAggregationContext from './aggregation/sensor.aggregation.context.service';
 import SensorRecordType from '../types/sensor.record.type';
+import { InternalResultType, InternalStatus } from '../types/internal/internal.result.type';
+import debug from 'debug';
+
+
+const log: debug.IDebugger = debug('app:sensor-service');
 
 /**
  * @class SensorService
@@ -20,7 +25,7 @@ class SensorService implements CRUD {
      * @param resource - sensor data to be created
      * @returns - id of the created sensor data entry
      */
-    async create(resource: CreateSensorDataDto) {
+    async create(resource: CreateSensorDataDto): Promise<InternalResultType> {
         return SensorDao.addSensorData(resource);
     }
     
@@ -40,13 +45,33 @@ class SensorService implements CRUD {
      * @param filterParams - filter parameters
      * @returns - list of sensor data entries
      */
-    async list(limit: number, page: number, filterParams: ReadSensorDataDto) {
-        let rawSensorData: SensorRecordType[] = await SensorDao.getSensorData(limit, page, filterParams);
+    async list(limit: number, page: number, filterParams: ReadSensorDataDto): Promise<InternalResultType> {
+        let sensorDataFetchingResult: InternalResultType = await SensorDao.getSensorData(limit, page, filterParams);
+        if (sensorDataFetchingResult.status !== InternalStatus.success) {
+            log('Error fetching sensor data: ', sensorDataFetchingResult);
+            return sensorDataFetchingResult;
+        }
+        
+        const rawSensorData: SensorRecordType[] = sensorDataFetchingResult.data;
+        if (rawSensorData.length === 0) {
+            log('No data to aggregate.');
+            return {
+                message: "success",
+                status: InternalStatus.success,
+                data: rawSensorData,
+            };
+        }
+
         // set aggregation strategy based on the timeResolution parameter
         const sensorAggregationContext = new SensorAggregationContext(filterParams.timeResolution);
         // apply aggregation strategy
         const sensorData = sensorAggregationContext.getAggregateForSetStrategy(rawSensorData);
-        return sensorData;
+        log('Aggregated data: ', sensorData);
+        return {
+            message: "success",
+            status: InternalStatus.success,
+            data: sensorData,
+        };
     }
 }
 

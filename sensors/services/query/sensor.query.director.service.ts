@@ -66,11 +66,9 @@ class SensorQueryDirector {
             this.builder.addRoomFilter(room);
         }
         
-        // add limit and skip
         log("Adding limit with page: ", limit, page);
         this.builder.addLimitSkip(limit, page);
 
-        // add group by because of time resolution
         if (timeResolution) {
             log("Adding group by");
             this.builder.addGroupBy();

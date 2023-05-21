@@ -9,6 +9,7 @@ import SensorQueryDirector from "../services/query/sensor.query.director.service
 import ConcreteSensorQueryBuilder from "../services/query/sensor.query.builder.service";
 import SensorQueryBuilder from "../services/query/sensor.query.builder.interface";
 import SensorRecordType from "../types/sensor.record.type";
+import { InternalResultType, InternalStatus } from "../types/internal/internal.result.type";
 
 const log: debug.IDebugger = debug('app:mongo-dao');
 
@@ -47,14 +48,27 @@ class SensorDataDao {
      * @param sensorDataFields - fields to be added to the SensorData document
      * @returns id of the newly created document
      */
-    async addSensorData(sensorDataFields: CreateSensorDataDto) {
+    async addSensorData(sensorDataFields: CreateSensorDataDto): Promise<InternalResultType> {
         const generatedId = shortid.generate();
         const sensorData = new this.SensorData({
             _id: generatedId,
             ...sensorDataFields
         });
-        await sensorData.save();
-        return generatedId;
+        
+        const result = sensorData.save().then(() =>
+            ({
+                message: generatedId,
+                status: InternalStatus.success,
+            })
+        ).catch((error: any) => {
+            log(error);
+            return {
+                message: "failure",
+                status: InternalStatus.failure,
+            };
+        });
+
+        return result;
     }
     
     /**
@@ -64,7 +78,7 @@ class SensorDataDao {
      * @param sensorDataBulkFields - array of fields to be added to the SensorData documents
      * @returns 
      */
-    async addSensorDataBulk(sensorDataBulkFields: CreateSensorDataDto[]) {
+    async addSensorDataBulk(sensorDataBulkFields: CreateSensorDataDto[]): Promise<InternalResultType> {
         const sensorDataBulk = sensorDataBulkFields.map((sensorDataFields) => {
             const generatedId = shortid.generate();
             const sensorData = new this.SensorData({
@@ -74,12 +88,18 @@ class SensorDataDao {
             return sensorData;
         });
 
-        const result: boolean = await this.SensorData.insertMany(sensorDataBulk).then((docs: any) => {
+        const result = this.SensorData.insertMany(sensorDataBulk).then((docs: any) => {
             log(`Successfully inserted ${docs.length} documents`)
-            return true;
+            return ({
+                message: "success",
+                status: InternalStatus.success,
+            });
           }).catch((err: any) => {
             log(`Error inserting documents: ${err}`)
-            return false;
+            return {
+                message: "failure",
+                status: InternalStatus.failure,
+            };
           })
         
         return result;
@@ -92,18 +112,37 @@ class SensorDataDao {
      * @param filterParams - query parameters to be used to filter the documents
      * @returns array of SensorData documents
      */
-    async getSensorData(limit = 25, page = 0, filterParams: ReadSensorDataDto): Promise<SensorRecordType[]> {
+    async getSensorData(limit = 25, page = 0, filterParams: ReadSensorDataDto): Promise<InternalResultType> {
         if (!this.SensorData) {
             log("SensorData model is not defined");
+            return {
+                message: "failure",
+                status: InternalStatus.failure,
+                data: [],
+            };
         }
 
         let builder: SensorQueryBuilder = new ConcreteSensorQueryBuilder(this.SensorData);
         let director: SensorQueryDirector = new SensorQueryDirector(builder);
         director.buildSensorQuery(filterParams, limit, page);
         const query = builder.getQuery();
-        // TODO: handle error
-        log(`Query to be applied: ${JSON.stringify(query)}`);
-        return this.SensorData.aggregate(query).exec();
+        log(`Constructed sensor data query: ${JSON.stringify(query)}`);
+        
+        return this.SensorData.aggregate(query).exec().then((result: SensorRecordType[]) => {
+            log(`Successfully retrieved ${result.length} documents`);
+            return {
+                message: "success",
+                status: InternalStatus.success,
+                data: result,
+            };
+        }).catch((err: any) => {
+            log(`Error retrieving documents: ${err}`);
+            return {
+                message: "failure",
+                status: InternalStatus.failure,
+                data: [],
+            };
+        });
     }
 }
 

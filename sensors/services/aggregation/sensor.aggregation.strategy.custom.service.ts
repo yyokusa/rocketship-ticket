@@ -36,11 +36,6 @@ export abstract class CustomStrategy implements Strategy {
      * @returns {GrouppedSensorRecordType[]} Aggregated data.
      */
     public getAggregateCustom(groupedRawRecords: GrouppedSensorRecordType[], strategyCallback: (date: Date) => string): FinalAggregatedDataRecord[]{
-        if (groupedRawRecords.length === 0) {
-            log('No data to aggregate.');
-            return [];
-        }
-
         let aggregatedSensorDataOverTimePeriodResult: FinalAggregatedDataRecord[] = [];
         // iterate each group of raw grouped sensor data to be aggregated over time period
         for (const groupedRawRecord of groupedRawRecords) {

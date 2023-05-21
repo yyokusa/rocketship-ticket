@@ -8,6 +8,7 @@ import debug from 'debug';
 
 import { ReadSensorDataDto, TimeResolution } from '../dto/read.sensor_data.dto';
 import { CreateSensorDataDto } from '../dto/create.sensor_data.dto';
+import { InternalResultType, InternalStatus } from '../types/internal/internal.result.type';
 
 const log: debug.IDebugger = debug('app:sensors-controller');
 
@@ -48,9 +49,14 @@ class SensorController {
         };
 
         // call the create method from the SensorService
-        const recordId = await SensorService.create(createSensorDataDto);
+        const result: InternalResultType = await SensorService.create(createSensorDataDto);
+        if (result.status !== InternalStatus.success) {
+            log("Failed to create record");
+            res.status(500).send({ message: result.message });
+            return;
+        }
         // send the id of the newly created record back to the client with status 201
-        res.status(201).send({ id: recordId });
+        res.status(201).send({ id: result.message });
     }
     
     /**
@@ -69,14 +75,8 @@ class SensorController {
             return sensorData;
         });
         const result = await SensorService.createBulk(resources);
-        const message = result ? "success" : "failure";
-        const status = result ? 201 : 500;
-        if (result) {
-            log("Created bulk records successfully");
-        } else {
-            log("Failed to create bulk records");
-        }
-        res.status(status).send({ message });
+        const status = result.status === InternalStatus.success ? 201 : 500;
+        res.status(status).send({ message: result.message });
     }
 
     /**
@@ -106,8 +106,13 @@ class SensorController {
             timeResolution: TimeResolution[timeResolution  as keyof typeof TimeResolution],
         } as ReadSensorDataDto;
 
-        const sensorsData = await SensorService.list(100, 0, readDataDto);
-        
+        const sensorsDataResult = await SensorService.list(100, 0, readDataDto);
+        if (sensorsDataResult.status !== InternalStatus.success) {
+            log("Failed to list records");
+            res.status(500).send({ message: sensorsDataResult.message });
+            return;
+        }
+        const sensorsData = sensorsDataResult.data;
         res.status(200).send(sensorsData);
     }
 }
