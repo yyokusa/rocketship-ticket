@@ -16,6 +16,8 @@ const log: debug.IDebugger = debug('app:sensors-middleware');
 class SensorMiddleware {    
 
     /**
+     * @method extractStarttime
+     * @description
      * Stores the startTime query parameter in the request body
      * @param req - Express request object
      * @param res - Express response object
@@ -34,6 +36,8 @@ class SensorMiddleware {
     }
     
     /**
+     * @method extractEndtime
+     * @description
      * Stores the endTime query parameter in the request body
      * @param req - Express request object
      * @param res - Express response object
@@ -52,6 +56,8 @@ class SensorMiddleware {
     }
     
     /**
+     * @method extractMeasurement
+     * @description
      * Stores the measurement query parameter in the request body
      * @param req - Express request object
      * @param res - Express response object
@@ -70,6 +76,8 @@ class SensorMiddleware {
     }
     
     /**
+     * @method extractRoom
+     * @description
      * Stores the room query parameter in the request body
      * @param req - Express request object
      * @param res - Express response object
@@ -88,6 +96,8 @@ class SensorMiddleware {
     }
     
     /**
+     * @method extractTimeResolution
+     * @description
      * Stores the timeResolution query parameter in the request body
      * @param req - Express request object
      * @param res - Express response object
@@ -106,6 +116,8 @@ class SensorMiddleware {
     }
 
     /**
+     * @method extractSensorId
+     * @description
      * Checks if the startTime and endTime query parameters are valid together
      * @param req - Express request object
      * @param res - Express response object
@@ -129,6 +141,8 @@ class SensorMiddleware {
     }
 
     /**
+     * @method isMeasurementValid
+     * @description
      * Checks if the timeResolution query parameter is valid
      * @param req - Express request object
      * @param res - Express response object

@@ -44,13 +44,16 @@ export abstract class CustomStrategy implements Strategy {
     public type: TimeResolution; 
 
     /**
-     * This method returns aggregated data.
+     * @method getAggregate
      * @param data - Data to be aggregated.
+     * @returns {GroupByDataType[]} Aggregated data.
      */
     abstract getAggregate(data: GroupByDataType[]): GroupByDataType[];
 
     /**
-     * This method returns aggregated data using custom strategy.
+     * @method getAggregateCustom
+     * @description
+     * Returns aggregated data using custom strategy.
      * @param sensorDataRecordsByGroup - Data to be aggregated.
      * @param strategyCallback - Callback function for custom strategy.
      * @returns {GroupByDataType[]} Aggregated data.

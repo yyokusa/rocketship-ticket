@@ -19,7 +19,7 @@ const log: debug.IDebugger = debug("app:sensor-aggregation-context-service");
  */
 export default class SensorAggregationContext {
     /**
-     * @type {Strategy} The Context maintains a reference to one of the Strategy
+     * @property {Strategy} The Context maintains a reference to one of the Strategy
      * objects. The Context does not know the concrete class of a strategy. It
      * should work with all strategies via the Strategy interface.
      */
@@ -52,15 +52,22 @@ export default class SensorAggregationContext {
     }
 
     /**
-     * Usually, the Context allows replacing a Strategy object at runtime.
+     * @method setStrategy
+     * @description
+     * Context allows replacing a Strategy object at runtime.
+     * @param strategy - Strategy object
      */
     public setStrategy(strategy: Strategy) {
         this.strategy = strategy;
     }
 
     /**
-     * The Context delegates some work to the Strategy object instead of
+     * @method getAggregateForSetStrategy
+     * @description
+     * The Context delegates work to the Strategy object instead of
      * implementing multiple versions of the algorithm on its own.
+     * @param data - SensorRecordType[]
+     * @returns SensorRecordType[] | GroupByDataType[]
      */
     public getAggregateForSetStrategy(data: SensorRecordType[]): SensorRecordType[] | GroupByDataType[] {
         log(`Context: aggregating data using the ${this.strategy.type} strategy`);

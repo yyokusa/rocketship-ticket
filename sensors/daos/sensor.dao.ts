@@ -41,7 +41,9 @@ class SensorDataDao {
     }
 
     /**
-     * This function creates a new SensorData document and saves it to the database
+     * @method addSensorData
+     * @description 
+     * This method creates a new SensorData document and saves it to the database
      * @param sensorDataFields - fields to be added to the SensorData document
      * @returns id of the newly created document
      */
@@ -56,7 +58,9 @@ class SensorDataDao {
     }
     
     /**
-     * This function creates new SensorData documents and saves them to the database
+     * @method addSensorDataBulk
+     * @description
+     * This method creates new SensorData documents and saves them to the database
      * @param sensorDataBulkFields - array of fields to be added to the SensorData documents
      * @returns 
      */

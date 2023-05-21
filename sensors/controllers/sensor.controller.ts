@@ -12,11 +12,19 @@ import { CreateSensorDataDto } from '../dto/create.sensor_data.dto';
 const log: debug.IDebugger = debug('app:sensors-controller');
 
 // user controller singleton
+/**
+ * @class SensorController
+ * @description Controller for the sensor data
+ * @method createSensorData - create a new sensor data record
+ * @method createSensorDataBulk - create multiple sensor data records
+ * @method listSensorData - list sensor data records
+ */
 class SensorController {
     
     /**
-     * This function will be called when the client makes a POST request to /sensors
-     * 
+     * @method createSensorData
+     * @description Create a new sensor data record
+     * This method will be called when the client makes a POST request to /sensors
      * @param req - Express request object
      * @param res - Express response object
      * @returns id of the newly created record
@@ -46,7 +54,9 @@ class SensorController {
     }
     
     /**
-     * This function will be called when the client makes a POST request to /sensors/bulk
+     * @method createSensorDataBulk
+     * @description Create multiple sensor data records
+     * This method will be called when the client makes a POST request to /sensors/bulk
      * @param req - Express request object
      * @param res - Express response object
      * @returns status code 201 if all records were created successfully, 500 otherwise
@@ -70,7 +80,9 @@ class SensorController {
     }
 
     /**
-     * This function will be called when the client makes a GET request to /sensors
+     * @method listSensorData
+     * @description List sensor data records
+     * This method will be called when the client makes a GET request to /sensors
      * @param req - Express request object
      * @param res - Express response object
      * @returns a list of sensor data records
@@ -87,7 +99,6 @@ class SensorController {
 
         // construct a ReadSensorDataDto from the query parameters
         const readDataDto = {
-            // TODO: looks ugly, find a better way to do this
             startTime: new Date(startTime),
             endTime: new Date(endTime),
             measurement,

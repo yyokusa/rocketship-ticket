@@ -25,8 +25,9 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
 
     /**
-     * @method getQuery
+     * @method reset
      * @description resets the model and the query
+     * @param model - model to be used for the query
      */
     public reset(model: SensorQueryModelType): void {
         this.model = model;
@@ -35,6 +36,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
     
     /**
+     * @method addStartTimeFilter
+     * @description
      * This method adds start time filter to the query.
      * @param startTime - start time of the query
      */
@@ -51,6 +54,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
 
     /**
+     * @method addEndTimeFilter
+     * @description
      * This method adds end time filter to the query.
      * @param endTime - end time of the query
      */
@@ -66,6 +71,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
         
     }
     /**
+     * @method addMeasurementTypeFilter
+     * @description
      * This method adds measurement type filter to the query.
      * @param measurementType - measurement type of the query
      */
@@ -81,6 +88,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
 
     /**
+     * @method addRoomFilter
+     * @description
      * This method adds room filter to the query.
      * @param room - room of the query
      */
@@ -96,6 +105,8 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
 
     /**
+     * @method addLimitSkip
+     * @description
      * This method adds limit and skip to the query.
      * @param limit - limit of the query
      * @param page - page of the query
@@ -141,7 +152,9 @@ export default class ConcreteSensorQueryBuilder implements SensorQueryBuilder {
     }
 
     /**
-     * This method returns the query.
+     * @method getQuery
+     * @description
+     * This method returns the prepared query.
      * @returns the query
      */
     public getQuery(): any {

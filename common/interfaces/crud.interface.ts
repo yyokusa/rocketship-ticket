@@ -1,3 +1,14 @@
+/**
+ * @interface CRUD
+ * @description
+ * Interface for CRUD operations
+ * @method list
+ * @method create
+ * @method putById
+ * @method readById
+ * @method deleteById
+ * @method patchById
+ */
 export interface CRUD {
     list: (limit: number, page: number, filterParams: any) => Promise<any>;
     create: (resource: any) => Promise<any>;

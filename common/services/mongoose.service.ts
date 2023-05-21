@@ -3,6 +3,14 @@ import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
 
+/**
+ * @class MongooseService
+ * @description Mongoose Service
+ * @method connectWithRetry - connect to MongoDB with retry
+ * @method getMongoose - get mongoose module
+ * @property count - number of retries
+ * @property mongooseOptions - mongoose options
+ */
 class MongooseService {
     private count = 0;
     private mongooseOptions = {
@@ -13,10 +21,19 @@ class MongooseService {
         this.connectWithRetry();
     }
 
+    /**
+     * @method getMongoose
+     * @description Get mongoose module
+     * @returns - mongoose
+     */
     getMongoose() {
         return mongoose;
     }
 
+    /**
+     * @method connectWithRetry
+     * @description Connect to MongoDB with retry
+     */ 
     connectWithRetry = () => {
         log('Attempting MongoDB connection (will retry if needed)');
         mongoose
