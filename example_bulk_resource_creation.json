@@ -1,0 +1,62 @@
+[
+    {
+        "Value": 22.8,
+        "Datetime": "2022-08-23T22:06:12Z",
+        "Room": "Room C",
+        "Measurement": "Temperature"
+    },
+    {
+        "Value": 18.5,
+        "Datetime": "2022-08-23T14:11:25Z",
+        "Room": "Room A",
+        "Measurement": "Humidity"
+    },
+    {
+        "Value": 20.3,
+        "Datetime": "2022-08-24T09:36:40Z",
+        "Room": "Room B",
+        "Measurement": "Temperature"
+    },
+    {
+        "Value": 17.9,
+        "Datetime": "2022-08-25T20:47:02Z",
+        "Room": "Room B",
+        "Measurement": "Temperature"
+    },
+    {
+        "Value": 21.6,
+        "Datetime": "2022-08-26T16:33:55Z",
+        "Room": "Room C",
+        "Measurement": "Humidity"
+    },
+    {
+        "Value": 19.4,
+        "Datetime": "2022-08-26T19:25:30Z",
+        "Room": "Room A",
+        "Measurement": "Humidity"
+    },
+    {
+        "Value": 23.1,
+        "Datetime": "2022-08-27T19:58:48Z",
+        "Room": "Room C",
+        "Measurement": "Temperature"
+    },
+    {
+        "Value": 16.8,
+        "Datetime": "2022-08-27T23:49:15Z",
+        "Room": "Room A",
+        "Measurement": "Temperature"
+    },
+    {
+        "Value": 18.7,
+        "Datetime": "2022-08-28T18:29:30Z",
+        "Room": "Room B",
+        "Measurement": "Humidity"
+    },
+    {
+        "Value": 20.9,
+        "Datetime": "2022-08-29T11:19:00Z",
+        "Room": "Room C",
+        "Measurement": "Humidity"
+    }
+]

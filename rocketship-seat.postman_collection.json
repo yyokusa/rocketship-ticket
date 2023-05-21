@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "714b9b59-4749-4024-ade7-bb70476ce432",
+		"name": "rocketship-seat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18548949"
+	},
+	"item": [
+		{
+			"name": "create-sensor-data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"REST_API_EXAMPLE_ID\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"Value\": 22.8,\n        \"Datetime\": \"2022-08-23T13:06:12+14:00\",\n        \"Room\": \"Room C\",\n        \"Measurement\": \"Temperature\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/sensors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sensors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-sensor-data/bulk",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"REST_API_EXAMPLE_ID\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"Value\": 22.8,\n        \"Datetime\": \"2022-08-23T22:06:12Z\",\n        \"Room\": \"Room C\",\n        \"Measurement\": \"Temperature\"\n    },\n    {\n        \"Value\": 18.5,\n        \"Datetime\": \"2022-08-23T14:11:25Z\",\n        \"Room\": \"Room A\",\n        \"Measurement\": \"Humidity\"\n    },\n    {\n        \"Value\": 20.3,\n        \"Datetime\": \"2022-08-24T09:36:40Z\",\n        \"Room\": \"Room B\",\n        \"Measurement\": \"Temperature\"\n    },\n    {\n        \"Value\": 17.9,\n        \"Datetime\": \"2022-08-25T20:47:02Z\",\n        \"Room\": \"Room B\",\n        \"Measurement\": \"Temperature\"\n    },\n    {\n        \"Value\": 21.6,\n        \"Datetime\": \"2022-08-26T16:33:55Z\",\n        \"Room\": \"Room C\",\n        \"Measurement\": \"Humidity\"\n    },\n    {\n        \"Value\": 19.4,\n        \"Datetime\": \"2022-08-26T19:25:30Z\",\n        \"Room\": \"Room A\",\n        \"Measurement\": \"Humidity\"\n    },\n    {\n        \"Value\": 23.1,\n        \"Datetime\": \"2022-08-27T19:58:48Z\",\n        \"Room\": \"Room C\",\n        \"Measurement\": \"Temperature\"\n    },\n    {\n        \"Value\": 16.8,\n        \"Datetime\": \"2022-08-27T23:49:15Z\",\n        \"Room\": \"Room A\",\n        \"Measurement\": \"Temperature\"\n    },\n    {\n        \"Value\": 18.7,\n        \"Datetime\": \"2022-08-28T18:29:30Z\",\n        \"Room\": \"Room B\",\n        \"Measurement\": \"Humidity\"\n    },\n    {\n        \"Value\": 20.9,\n        \"Datetime\": \"2022-08-29T11:19:00Z\",\n        \"Room\": \"Room C\",\n        \"Measurement\": \"Humidity\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/sensors/bulk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sensors",
+						"bulk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read-sensor-data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/sensors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sensors"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "2022-08-23T13:11:25Z",
+							"disabled": true
+						},
+						{
+							"key": "endTime",
+							"value": "2022-08-23T23:06:12Z",
+							"description": "2011-12-03T10:15:30+01:00",
+							"disabled": true
+						},
+						{
+							"key": "measurement",
+							"value": "Temperature",
+							"description": "Humidity",
+							"disabled": true
+						},
+						{
+							"key": "room",
+							"value": "Room B",
+							"disabled": true
+						},
+						{
+							"key": "timeResolution",
+							"value": "weekly",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
