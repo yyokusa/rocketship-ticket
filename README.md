@@ -206,6 +206,8 @@ I though about seperating `calculateAverage` function into a seperate class or j
 Singletons are hard to write unit tests due to class member variables that need resetting. We don't have many such class properties. We also consider tests will be run on development database that could be dropped.
 
 We could use dependency injection and mock data for better testability. Spring framework is a good example for dependency injection.
+#### Database Selection SQL vs NoSQL
+I talk about database selection trade offs in `Database Choice` section.
 
 ## Left Out
 - There is a weird bug which ValidatorJS accepts string of positive offset UTC date as a valid ISO8601 date string during POST request but does not consider it valid during GET request. I would investigate it more and probably open a Github issue, since similar validation errors seen in their regex previously: https://github.com/typestack/class-validator/issues/412
