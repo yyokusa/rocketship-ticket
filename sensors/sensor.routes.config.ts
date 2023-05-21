@@ -3,7 +3,7 @@ import SensorController from './controllers/sensor.controller';
 import SensorMiddleware from './middleware/sensor.middleware';
 import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 
 /**
  * @class SensorRoutes
@@ -53,17 +53,17 @@ export class SensorRoutes extends CommonRoutesConfig {
         this.app
             .route(`/sensors`)
             .get(
+                query('room').optional().isString(),
+                query('measurement').optional().isString(),
+                query('value').optional().isNumeric(),
+                query('startTime').optional().isISO8601().withMessage('Must be a ISO8601 date.'),
+                query('endTime').optional().isISO8601().withMessage('Must be a ISO8601 date.'),
+                query('timeResolution').optional().isString(),
                 SensorMiddleware.extractStarttime,
                 SensorMiddleware.extractEndtime,
                 SensorMiddleware.extractMeasurement,
                 SensorMiddleware.extractRoom,
                 SensorMiddleware.extractTimeResolution,
-                body('room').optional().isString(),
-                body('measurement').optional().isString(),
-                body('value').optional().isNumeric(),
-                body('startTime').optional().isISO8601().withMessage('starTime must be a ISO8601 date.'),
-                body('endTime').optional().isISO8601().withMessage('endtime must be a ISO8601 date.'),
-                body('timeResolution').optional().isString(),
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 SensorMiddleware.areDatesTupleValid,
                 SensorMiddleware.isTimeResolutionValid,
